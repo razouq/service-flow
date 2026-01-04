@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { CssBaseline } from '@mui/material';
 import { Box } from '@mui/material';
 import Navbar from '@/components/Navbar';
-import { ThemeProvider } from '@mui/material/styles';
 import Providers from '@/providers';
 
 export const metadata: Metadata = {
@@ -19,7 +17,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <CssBaseline />
           <Navbar />
 
           <Box

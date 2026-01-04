@@ -19,6 +19,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useState } from 'react';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001';
+
 const quoteSchema = z.object({
   name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(1, 'Phone is required').regex(/^[\d\s\-\+\(\)]+$/, 'Invalid phone number'),
@@ -65,7 +67,7 @@ export default function QuotePage() {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/quotes', {
+      const response = await fetch(`${API_BASE}/api/quotes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
