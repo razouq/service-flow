@@ -88,7 +88,8 @@ async def get_quotes():
         quotes = []
         cursor = db.quotes.find().sort("createdAt", -1)
         async for document in cursor:
-            document["_id"] = str(document["_id"])
+            document["id"] = str(document["_id"])
+            del document["_id"]
             quotes.append(document)
         return {"quotes": quotes, "count": len(quotes)}
     except Exception as e:
