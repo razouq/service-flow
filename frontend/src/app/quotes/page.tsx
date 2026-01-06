@@ -1,6 +1,7 @@
 'use client';
 
 import QuotesTable from '@/components/QuotesTable';
+import { fetchQuotes } from '@/features/quotes/client';
 import { Quote } from '@/types/Quote';
 import {
   Alert,
@@ -16,26 +17,15 @@ export default function QuotesPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`${API_BASE}/api/quotes`);
-        if (!res.ok) {
-          throw new Error('Failed to fetch quotes');
-        }
-        const data = await res.json();
-        const quotes = Array.isArray(data?.quotes) ? data.quotes : [];
-        setRows(quotes);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuotes();
-  }, []);
+ useEffect(() => {
+  setLoading(true)
+  setError(null)
+
+  fetchQuotes()
+    .then(setRows)
+    .catch(err => setError(err.message ?? 'Unknown error'))
+    .finally(() => setLoading(false))
+}, [])
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
