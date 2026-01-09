@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import get_settings
 from .db import ping
-from .routers import quotes
+from .routers import auth, quotes
 
 settings = get_settings()
 
@@ -30,4 +30,5 @@ async def health() -> dict:
 
 
 # Routers
+app.include_router(auth.router)
 app.include_router(quotes.router)
