@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from ..core.security import create_access_token, hash_password, verify_password
+from ..core.security import create_access_token, verify_password
 from ..db import db
 from ..models.user import Token, UserLogin
 
@@ -36,30 +36,4 @@ async def login(credentials: UserLogin) -> Token:
     except Exception as exc:  # pragma: no cover
         raise HTTPException(status_code=500, detail=f"Login failed: {exc}")
 
-
-@router.post("/register", response_model=Token)
-async def register(user_data: UserLogin) -> Token:
-    """Register a new user with email and password."""
-    try:
-        # Check if user already exists
-        existing_user = await db.users.find_one({"email": user_data.email})
-        if existing_user:
-            raise HTTPException(status_code=400, detail="Email already registered")
-        
-        # Hash password and create user
-        hashed_password = hash_password(user_data.password)
-        result = await db.users.insert_one({
-            "email": user_data.email,
-            "hashed_password": hashed_password,
-        })
-        
-        # Create JWT token
-        access_token = create_access_token(
-            data={"email": user_data.email, "user_id": str(result.inserted_id)}
-        )
-        
-        return Token(access_token=access_token, token_type="bearer")
-    except HTTPException:
-        raise
-    except Exception as exc:  # pragma: no cover
-        raise HTTPException(status_code=500, detail=f"Registration failed: {exc}")
+# Registration route removed as requested
