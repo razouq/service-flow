@@ -6,3 +6,7 @@ python-jose
 passlib
 bcrypt
 email-validator
+pytest
+pytest-asyncio
+httpx
+mongomock-motor
